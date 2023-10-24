@@ -1,11 +1,10 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-
 import Login from "./login";
+import SignUp from "./signup";
 export default function Home() {
   return (
     <>
       <Login />
+      {/* <SignUp /> */}
     </>
   );
 }
