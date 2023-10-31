@@ -25,7 +25,8 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const userDocument = doc(collection(dbFireStore, "users"));
-      setDoc(userDocument, data);
+      const userInfo = { ...data, userId: userDocument.id };
+      setDoc(userDocument, userInfo);
       toast("Account created successfully");
       router.replace("/");
     } catch (error) {

@@ -3,9 +3,10 @@ import { useForm } from "react-hook-form";
 import SectionContainer from "@/components/containers/SectionContainer";
 import Container from "@/components/containers/Container";
 import GridContainer from "@/components/containers/GridContainer";
-
+import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { dbFireStore } from "@/firebase/config";
+import "react-toastify/ReactToastify.min.css";
 import {
   collection,
   getDocs,
@@ -45,8 +46,18 @@ const Login = () => {
         return d.data();
       });
       if (result.length !== 0) {
-        router.replace("/dashboard");
+        router.replace(`/dashboard/${result[0].userId}`);
       } else {
+        toast.error("🦄 user not found", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         router.replace("/");
       }
     } catch (e) {
@@ -99,6 +110,7 @@ const Login = () => {
               </Link>
             </div>
           </form>
+          <ToastContainer />
         </GridContainer>
       </Container>
     </SectionContainer>
