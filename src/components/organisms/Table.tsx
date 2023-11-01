@@ -37,7 +37,7 @@ const columns = [
   }),
 ];
 
-const UserDataTable = ({ userData }) => {
+const UserDataTable = ({ userData }: any) => {
   const data = useMemo(() => userData, [userData]);
   const [individualData, setIndividualData] = useState({});
   const [updatedRecord, setUpdatedRecord] = useState(false);
@@ -47,7 +47,7 @@ const UserDataTable = ({ userData }) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-  const handleRowClick = (rowData) => {
+  const handleRowClick = (rowData: any) => {
     console.log("i am clicked", rowData);
     setIndividualData(rowData);
     window.feature_request_update.showModal();
