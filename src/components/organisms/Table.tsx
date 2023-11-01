@@ -50,7 +50,12 @@ const UserDataTable = ({ userData }: any) => {
   const handleRowClick = (rowData: any) => {
     console.log("i am clicked", rowData);
     setIndividualData(rowData);
-    window.feature_request_update.showModal();
+    const element = document.getElementById(
+      "feature_request_update"
+    ) as HTMLDialogElement;
+    if (element) {
+      element.showModal(); // Ensure 'element' is of type HTMLDialogElement
+    }
   };
   console.log("individual data::", individualData);
   console.log("daata::", data);
