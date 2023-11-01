@@ -1,9 +1,19 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+
 const profileImage = {
   src: "/assests/profileimage.jpg",
 };
+
 const Navbar = () => {
+  const router = useRouter();
+  const handleLogout = () => {
+    console.log("logged out");
+    router.replace("/");
+  };
+
   return (
     <div className="navbar bg-base-100 shadow-md">
       <div className="flex-1">
@@ -70,7 +80,10 @@ const Navbar = () => {
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <button onClick={handleLogout}>Logout</button>
+              {/* <Link href="/" onClick={handleLogout}>
+                Logout
+              </Link> */}
             </li>
           </ul>
         </div>
