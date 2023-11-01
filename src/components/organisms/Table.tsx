@@ -13,7 +13,7 @@ type UserData = {
   featureName: string;
   description: string;
   status: string;
-  approved: boolean;
+  approved: string;
   approvedAmount: number;
   counterAmount: number;
   proposedAmount: number;
@@ -30,14 +30,14 @@ const columns = [
   }),
   columnHelper.accessor("approved", {
     header: () => "Approved",
-    cell: (info) => (info.getValue() === false ? "No" : "Yes"),
+    cell: (info) => (info.getValue() === "approved" ? "approved" : "pending"),
   }),
   columnHelper.accessor("status", {
     header: () => "Status",
   }),
 ];
 
-const UserDataTable = ({ userData }: any) => {
+const UserDataTable = ({ userData, heading, userRole }: any) => {
   const data = useMemo(() => userData, [userData]);
   const [individualData, setIndividualData] = useState({});
   const [updatedRecord, setUpdatedRecord] = useState(false);
@@ -68,7 +68,7 @@ const UserDataTable = ({ userData }: any) => {
 
   return (
     <div className="col-span-12">
-      <h1>Your Request Data</h1>
+      <h1>{heading}</h1>
       <table className="border border-black w-full">
         <thead className="bg-blue-700 text-white">
           {table.getHeaderGroups().map((headerGroup) => (
@@ -109,11 +109,12 @@ const UserDataTable = ({ userData }: any) => {
       </table>
 
       <dialog id="feature_request_update" className="modal">
-        <div className="modal-box w-11/12 max-w-5xl scroll-m-5">
+        <div className="modal-box  scroll-m-5">
           <FeatureDetails
             feature={individualData}
             updatedRecord={setUpdatedRecord}
             update={updatedRecord}
+            userRole={userRole}
           />
           <div className="modal-action">
             <form method="dialog">

@@ -33,7 +33,7 @@ const AddRequest = () => {
       proposedAmount: 0,
       counterAmount: 0,
       approvedAmount: 0,
-      approved: false,
+      approved: "pending",
     },
   });
   const addRecord = async (data, e) => {

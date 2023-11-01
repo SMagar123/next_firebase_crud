@@ -45,8 +45,30 @@ const Login = () => {
       const result = querySnapshot.docs.map((d) => {
         return d.data();
       });
-      if (result.length !== 0) {
+      if (result.length !== 0 && result[0].userRole === "client") {
+        toast.success("🦄 Login successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         router.replace(`/dashboard/${result[0].userId}`);
+      } else if (result.length !== 0 && result[0].userRole === "admin") {
+        toast.success("🦄 Logged as admin ", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        router.replace(`/admin`);
       } else {
         toast.error("🦄 user not found", {
           position: "top-right",

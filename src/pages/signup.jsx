@@ -7,6 +7,8 @@ import { dbFireStore } from "@/firebase/config";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/ReactToastify.min.css";
+
 const SignUp = () => {
   const router = useRouter();
   const {
@@ -25,9 +27,18 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const userDocument = doc(collection(dbFireStore, "users"));
-      const userInfo = { ...data, userId: userDocument.id };
-      setDoc(userDocument, userInfo);
-      toast("Account created successfully");
+      const userInfo = { ...data, userId: userDocument.id, userRole: "client" };
+      await setDoc(userDocument, userInfo);
+      toast.success("🦄 Account Created successfully", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
       router.replace("/");
     } catch (error) {
       console.error(error);

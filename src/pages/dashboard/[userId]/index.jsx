@@ -25,13 +25,13 @@ import useUserDetails from "@/hooks/useUserDetails";
 const UserDashboard = () => {
   const router = useRouter();
   const userId = router.query?.userId;
+  const userRole = "client";
   const { userData } = useUserDetails();
   const addRecord = () => {
     router.push(`/dashboard/${userId}/addrequest`);
   };
   console.log("user id:::", userId);
   console.log("user details:::", userData);
- 
 
   return (
     <>
@@ -47,7 +47,11 @@ const UserDashboard = () => {
               Add Request
               <IoMdAddCircle fontSize="large" />
             </button>
-            <UserDataTable userData={userData} />
+            <UserDataTable
+              userData={userData}
+              heading={"Your Records"}
+              userRole={userRole}
+            />
             {/* <UserDataTable /> */}
             <ToastContainer />
           </GridContainer>

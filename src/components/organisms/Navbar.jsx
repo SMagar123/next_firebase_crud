@@ -9,15 +9,22 @@ const profileImage = {
 
 const Navbar = () => {
   const router = useRouter();
+  const userId = router.query?.userId;
   const handleLogout = () => {
     console.log("logged out");
     router.replace("/");
   };
-
+  const handleHome = () => {
+    if (userId === undefined) {
+      router.replace(`/admin`);
+    } else router.replace(`/dashboard/${userId}`);
+  };
   return (
     <div className="navbar bg-base-100 shadow-md">
       <div className="flex-1">
-        <a className="btn btn-ghost normal-case text-xl">PayNego</a>
+        <a className="btn btn-ghost normal-case text-xl" onClick={handleHome}>
+          PayNego
+        </a>
       </div>
       <div className="flex-none">
         <div className="dropdown dropdown-end">
