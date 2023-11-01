@@ -68,7 +68,7 @@ const UserDataTable = ({ userData, heading, userRole }: any) => {
 
   return (
     <div className="col-span-12">
-      <h1>{heading}</h1>
+      <h1 className="text-xl font-semibold mb-4">{heading}</h1>
       <table className="border border-black w-full">
         <thead className="bg-blue-700 text-white">
           {table.getHeaderGroups().map((headerGroup) => (

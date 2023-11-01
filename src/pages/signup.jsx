@@ -8,6 +8,7 @@ import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
+import Link from "next/link";
 
 const SignUp = () => {
   const router = useRouter();
@@ -94,7 +95,14 @@ const SignUp = () => {
               value="Register"
               className="border bg-green-600 cursor-pointer hover:bg-green-700 transition duration-300 text-white py-2 px-4"
             />
+            <div id="signup" className="flex gap-4">
+              <p>Have an account ?</p>
+              <Link href="/" className="text-green-700 font-bold">
+                Login Instead
+              </Link>
+            </div>
           </form>
+
           <ToastContainer />
         </GridContainer>
       </Container>
