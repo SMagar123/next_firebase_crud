@@ -66,6 +66,15 @@ const UserDataTable = ({ userData, heading, userRole }: any) => {
     clearModal();
   }, [updatedRecord]);
 
+  if (data?.length === 0) {
+    return (
+      <div className="col-span-12 border p-4 shadow-md">
+        <h1 className="text-2xl font-semibold mb-4 text-center">
+          Sorry no data found for now !!!
+        </h1>
+      </div>
+    );
+  }
   return (
     <div className="col-span-12">
       <h1 className="text-xl font-semibold mb-4">{heading}</h1>
@@ -129,7 +138,6 @@ const UserDataTable = ({ userData, heading, userRole }: any) => {
           </div>
         </div>
       </dialog>
-      
     </div>
   );
 };

@@ -6,7 +6,6 @@ import UserDataTable from "@/components/organisms/Table";
 import SectionContainer from "@/components/containers/SectionContainer";
 import Container from "@/components/containers/Container";
 import GridContainer from "@/components/containers/GridContainer";
-import CounterDiv from "@/components/molecules/CounterDiv";
 
 const AdminDashboard = () => {
   const router = useRouter();
@@ -17,29 +16,13 @@ const AdminDashboard = () => {
   return (
     <>
       <Navbar userRole={userRole} />
-      <SectionContainer className="mt-5">
+      <SectionContainer className="mt-3">
         <Container>
           <GridContainer>
-            <CounterDiv
-              title="Total Features Requested"
-              count={allData?.length}
-            />
-            <CounterDiv
-              title="New"
-              count={allData.filter((item) => item.status === "new")?.length}
-              titleColor="red-600"
-            />
-            <CounterDiv
-              title="On Process"
-              count={
-                allData.filter((item) => item.status === "on process")?.length
-              }
-              titleColor="green-600"
-            />
-            <CounterDiv
-              title="Solved"
-              count={allData.filter((item) => item.status === "solved")?.length}
-              titleColor="blue-600"
+            <UserDataTable
+              userData={allData}
+              heading={"Feature Requested "}
+              userRole={userRole}
             />
           </GridContainer>
         </Container>

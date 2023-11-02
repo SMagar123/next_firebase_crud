@@ -31,8 +31,14 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
     formState: { errors },
   } = useForm();
 
+  const validateNonNegative = (value) => {
+    if (value < 0) {
+      return "Value must be a non-negative number";
+    }
+    return true;
+  };
   //update the approval status of the payment deal
-  const handleApproval = async () => {
+  const handleComplete = async () => {
     try {
       const docId = featureDetail?.docId; // Assuming featureDetail contains the valid docId
       if (docId) {
@@ -40,7 +46,43 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
         await updateDoc(docRef, {
           ...feature,
           approved: "approved",
+          status: "solved",
+        });
+        toast.success("🦄 Status updated to solved ", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        updatedRecord(!update);
+      } else {
+        console.log("Invalid document ID!");
+      }
+    } catch (error) {
+      console.error("Error updating document: ", error);
+    }
+  };
+  //update the approval status of the payment deal
+  const handleApproval = async () => {
+    try {
+      const docId = featureDetail?.docId; // Assuming featureDetail contains the valid docId
+      if (docId) {
+        const docRef = doc(dbFireStore, "features", docId);
+        let approvedAmount = feature?.approvedAmount;
+        if (userRole === "client") {
+          approvedAmount = feature.proposedAmount;
+        } else if (userRole === "admin") {
+          approvedAmount = feature.counterAmount;
+        }
+        await updateDoc(docRef, {
+          ...feature,
+          approved: "approved",
           status: "on process",
+          approvedAmount: approvedAmount,
         });
         reset(); // Assuming reset is a function to reset the form
         toast.success("🦄 Payment deal done ", {
@@ -86,7 +128,7 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
       console.error("Error updating document: ", error);
     }
   };
-
+  //update the request
   const updateRecord = async (data, e) => {
     e.preventDefault();
     try {
@@ -123,7 +165,7 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
               Payment Negotiate
             </h2>
             {details
-              .filter((item) => item.key !== "docId" && item.key !== "userId")
+              .filter((item) => item.key !== "docId")
               .map((item) => {
                 return (
                   <div
@@ -149,9 +191,13 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
                   <input
                     type="number"
                     name="proposedAmount"
-                    {...register("proposedAmount", {
-                      required: "Proposed Amount is required",
-                    })}
+                    {...register(
+                      "proposedAmount",
+                      { validate: validateNonNegative },
+                      {
+                        required: "Proposed Amount is required",
+                      }
+                    )}
                     placeholder="Enter Proposed Amount"
                     disabled={
                       featureDetail?.approved === "approved" ? true : false
@@ -168,9 +214,13 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
                   <input
                     type="number"
                     name="counterAmount"
-                    {...register("counterAmount", {
-                      required: "Counter Amount is required",
-                    })}
+                    {...register(
+                      "counterAmount",
+                      { validate: validateNonNegative },
+                      {
+                        required: "Counter Amount is required",
+                      }
+                    )}
                     placeholder="Enter Counter Amount"
                     disabled={
                       featureDetail?.approved === "approved" ||
@@ -218,15 +268,27 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
               >
                 Cancel Request
               </button>
-            ) : null}
+            ) : (
+              <button
+                className="btn w-full mt-4 border bg-red-700 cursor-pointer hover:bg-red-800 transition duration-300 text-white py-2 px-4"
+                onClick={() =>
+                  document.getElementById("my_modal_3").showModal()
+                }
+              >
+                Complete
+              </button>
+            )}
 
             <ToastContainer />
           </div>
 
+          {/** request cancel confirmation modal */}
           <dialog id="my_modal_3" className="modal">
             <div className="modal-box">
               <h3 className="font-bold text-xl text-center">
-                Are you sure to cancel the request ?
+                {userRole === "client"
+                  ? "Are you sure to cancel the request ?"
+                  : "Is request solved?"}
               </h3>
               <div className="modal-action">
                 <form
@@ -234,7 +296,9 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
                   className="w-full flex gap-3 items-center justify-center"
                 >
                   <button
-                    onClick={handleCancel}
+                    onClick={
+                      userRole === "client" ? handleCancel : handleComplete
+                    }
                     name="cancel"
                     className="btn w-2/6 border bg-red-700 cursor-pointer hover:bg-red-800 transition duration-300 text-white py-2 px-4"
                   >
