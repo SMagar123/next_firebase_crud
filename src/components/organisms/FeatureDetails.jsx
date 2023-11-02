@@ -274,11 +274,16 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
                 onClick={() =>
                   document.getElementById("my_modal_3").showModal()
                 }
+                disabled={
+                  featureDetail?.proposedAmount === 0 ||
+                  featureDetail?.status === "solved"
+                    ? true
+                    : false
+                }
               >
                 Complete
               </button>
             )}
-
             <ToastContainer />
           </div>
 
