@@ -8,6 +8,7 @@ import {
 // import { useMemo } from "react";
 // import { TimeStamp } from "firebase/firestore";
 import FeatureDetails from "@/components/organisms/FeatureDetails";
+import { AiOutlineEye } from "react-icons/ai";
 
 type UserData = {
   featureName: string;
@@ -17,6 +18,7 @@ type UserData = {
   approvedAmount: number;
   counterAmount: number;
   proposedAmount: number;
+  actions: any;
 };
 const columnHelper = createColumnHelper<UserData>();
 
@@ -35,6 +37,10 @@ const columns = [
   columnHelper.accessor("status", {
     header: () => "Status",
   }),
+  columnHelper.display({
+    header: "Details",
+    id: "actions",
+  }),
 ];
 
 const UserDataTable = ({ userData, heading, userRole }: any) => {
@@ -47,7 +53,7 @@ const UserDataTable = ({ userData, heading, userRole }: any) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-  const handleRowClick = (rowData: any) => {
+  const handleRowClick = (rowData: UserData) => {
     console.log("i am clicked", rowData);
     setIndividualData(rowData);
     const element = document.getElementById(
@@ -77,9 +83,9 @@ const UserDataTable = ({ userData, heading, userRole }: any) => {
   }
   return (
     <div className="col-span-12">
-      <h1 className="text-xl font-semibold mb-4">{heading}</h1>
+      <h1 className="text-2xl font-semibold mb-4">{heading}</h1>
       <table className="border border-black w-full">
-        <thead className="bg-blue-700 text-white">
+        <thead className="bg-gray-700 text-white">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
@@ -99,17 +105,24 @@ const UserDataTable = ({ userData, heading, userRole }: any) => {
           {table.getRowModel().rows.map((row) => (
             <tr
               key={row.id}
-              className="hover:bg-slate-300"
-              onClick={() => {
-                handleRowClick(row?.original);
-              }}
+              className="hover:bg-slate-200 transition ease-in-out"
+              // onClick={() => {
+              //   handleRowClick(row?.original);
+              // }}
             >
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
-                  className="border border-black p-2 text-center cursor-pointer"
+                  className="border border-black py-4 text-center cursor-pointer font-medium"
                 >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  {cell.column.id === "actions" ? (
+                    <AiOutlineEye
+                      className="text-2xl text-gray-800 text-center w-full"
+                      onClick={() => handleRowClick(row?.original)}
+                    />
+                  ) : (
+                    flexRender(cell.column.columnDef.cell, cell.getContext())
+                  )}
                 </td>
               ))}
             </tr>

@@ -52,7 +52,7 @@ const Navbar = ({ userRole }) => {
                   <Link href="/admin/featuresRequested">Requests</Link>
                 </li>
                 <li>
-                  <a>Users</a>
+                  <Link href="/admin/users">Users</Link>
                 </li>
               </ul>
             </div>

@@ -71,11 +71,11 @@ const AddRequest = () => {
   return (
     <>
       <Navbar />
-      <SectionContainer>
+      <SectionContainer className="mt-4">
         <Container>
           <GridContainer>
             <div className="col-span-4 lg:col-span-6 lg:col-start-4">
-              <h3 className="font-bold mb-3 text-center">
+              <h3 className="font-bold mb-3 text-center text-2xl">
                 Add Required Feature
               </h3>
               <form
@@ -106,7 +106,7 @@ const AddRequest = () => {
                 <input
                   type="submit"
                   value="Submit"
-                  className="border bg-blue-700 cursor-pointer hover:bg-blue-800 transition duration-300 text-white py-2 px-4"
+                  className="btn border bg-gray-700 cursor-pointer hover:bg-gray-800 transition duration-300 text-white py-2 px-4"
                 />
               </form>
             </div>

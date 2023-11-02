@@ -53,9 +53,11 @@ const SignUp = () => {
         <GridContainer className="">
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="col-span-full shadow-lg flex flex-col gap-2 lg:col-span-6 lg:col-start-4 py-4 px-5"
+            className="col-span-full shadow-lg rounded-md flex flex-col gap-2 lg:col-span-6 lg:col-start-4 py-4 px-5"
           >
-            <h1 className="text-3xl font-semibold">Sign Up</h1>
+            <h1 className="text-3xl font-semibold text-center border-b-4">
+              Sign Up
+            </h1>
             <label htmlFor="email">Email</label>
             <input
               type="email"
@@ -93,11 +95,11 @@ const SignUp = () => {
             <input
               type="submit"
               value="Register"
-              className="border bg-green-600 cursor-pointer hover:bg-green-700 transition duration-300 text-white py-2 px-4"
+              className="btn border bg-gray-600 cursor-pointer hover:bg-gray-700 transition duration-300 text-white py-2 px-4"
             />
             <div id="signup" className="flex gap-4">
               <p>Have an account ?</p>
-              <Link href="/" className="text-green-700 font-bold">
+              <Link href="/" className="text-gray-700 font-bold">
                 Login Instead
               </Link>
             </div>

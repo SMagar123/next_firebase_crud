@@ -175,7 +175,13 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
                     <h3 className="text-lg font-semibold">
                       {item?.key?.toUpperCase()}
                     </h3>
-                    <p className="text-right font-medium">{item?.value}</p>
+                    <p className="text-right font-medium">
+                      {item?.key?.includes("Amount")
+                        ? `Rs.${item?.value?.toLocaleString("en-US", {
+                            maximumFractionDigits: 2,
+                          })}`
+                        : item?.value}
+                    </p>
                   </div>
                 );
               })}
