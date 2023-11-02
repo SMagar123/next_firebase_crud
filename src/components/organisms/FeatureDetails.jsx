@@ -199,9 +199,10 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
                     name="proposedAmount"
                     {...register(
                       "proposedAmount",
-                      { validate: validateNonNegative },
+
                       {
                         required: "Proposed Amount is required",
+                        validate: validateNonNegative,
                       }
                     )}
                     placeholder="Enter Proposed Amount"
@@ -220,13 +221,10 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
                   <input
                     type="number"
                     name="counterAmount"
-                    {...register(
-                      "counterAmount",
-                      { validate: validateNonNegative },
-                      {
-                        required: "Counter Amount is required",
-                      }
-                    )}
+                    {...register("counterAmount", {
+                      required: "Counter Amount is required",
+                      validate: validateNonNegative,
+                    })}
                     placeholder="Enter Counter Amount"
                     disabled={
                       featureDetail?.approved === "approved" ||
