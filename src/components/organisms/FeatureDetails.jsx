@@ -10,7 +10,7 @@ import {
   setDoc,
   where,
   query,
-  getDocs,
+  deleteDoc,
   updateDoc,
 } from "firebase/firestore";
 import { dbFireStore } from "@/firebase/config";
@@ -44,6 +44,31 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
         });
         reset(); // Assuming reset is a function to reset the form
         toast.success("🦄 Payment deal done ", {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        updatedRecord(!update);
+      } else {
+        console.log("Invalid document ID!");
+      }
+    } catch (error) {
+      console.error("Error updating document: ", error);
+    }
+  };
+  //delete the request
+  const handleCancel = async () => {
+    try {
+      const docId = featureDetail?.docId; // Assuming featureDetail contains the valid docId
+      if (docId) {
+        const docRef = doc(dbFireStore, "features", docId);
+        await deleteDoc(docRef);
+        toast.success("🦄 Request has been cancelled successfully ", {
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -165,7 +190,7 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
                 type="submit"
                 name="negotiate"
                 disabled={featureDetail?.approved === "approved" ? true : false}
-                className="border bg-red-700 cursor-pointer hover:bg-red-800 transition duration-300 text-white py-2 px-4"
+                className="btn border bg-gray-700 cursor-pointer hover:bg-gray-800 transition duration-300 text-white py-2 px-4"
               >
                 Negotiate
               </button>
@@ -179,12 +204,50 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
                   ? true
                   : false
               }
-              className="w-full border bg-blue-700 cursor-pointer hover:bg-blue-800 transition duration-300 text-white py-2 px-4"
+              className="btn w-full border bg-blue-700 cursor-pointer hover:bg-blue-800 transition duration-300 text-white py-2 px-4"
             >
               Approve
             </button>
+            {userRole === "client" ? (
+              <button
+                className="btn w-full mt-4 border bg-red-700 cursor-pointer hover:bg-red-800 transition duration-300 text-white py-2 px-4"
+                onClick={() =>
+                  document.getElementById("my_modal_3").showModal()
+                }
+                disabled={featureDetail?.approved === "approved" ? true : false}
+              >
+                Cancel Request
+              </button>
+            ) : null}
+
             <ToastContainer />
           </div>
+
+          <dialog id="my_modal_3" className="modal">
+            <div className="modal-box">
+              <h3 className="font-bold text-xl text-center">
+                Are you sure to cancel the request ?
+              </h3>
+              <div className="modal-action">
+                <form
+                  method="dialog"
+                  className="w-full flex gap-3 items-center justify-center"
+                >
+                  <button
+                    onClick={handleCancel}
+                    name="cancel"
+                    className="btn w-2/6 border bg-red-700 cursor-pointer hover:bg-red-800 transition duration-300 text-white py-2 px-4"
+                  >
+                    Yes
+                  </button>
+                  {/* if there is a button in form, it will close the modal */}
+                  <button className="btn w-2/6 border bg-blue-700 cursor-pointer hover:bg-blue-800 transition duration-300 text-white py-2 px-4">
+                    No
+                  </button>
+                </form>
+              </div>
+            </div>
+          </dialog>
         </GridContainer>
       </Container>
     </SectionContainer>

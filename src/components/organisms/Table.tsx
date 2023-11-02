@@ -129,6 +129,7 @@ const UserDataTable = ({ userData, heading, userRole }: any) => {
           </div>
         </div>
       </dialog>
+      
     </div>
   );
 };
