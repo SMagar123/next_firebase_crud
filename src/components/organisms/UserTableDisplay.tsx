@@ -56,7 +56,7 @@ const UserTableDisplay = ({ allUsers }: any) => {
     return (
       <div className="col-span-12 border p-4 shadow-md">
         <h1 className="text-2xl font-semibold mb-4 text-center">
-          No users found !
+          <span className="loading loading-bars loading-lg"></span>
         </h1>
       </div>
     );

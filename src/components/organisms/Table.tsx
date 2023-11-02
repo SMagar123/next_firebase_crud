@@ -76,7 +76,7 @@ const UserDataTable = ({ userData, heading, userRole }: any) => {
     return (
       <div className="col-span-12 border p-4 shadow-md">
         <h1 className="text-2xl font-semibold mb-4 text-center">
-          Sorry no data found for now !!!
+          <span className="loading loading-bars loading-lg"></span>
         </h1>
       </div>
     );
