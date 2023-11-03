@@ -5,6 +5,7 @@ import SectionContainer from "@/components/containers/SectionContainer";
 import Container from "@/components/containers/Container";
 import GridContainer from "@/components/containers/GridContainer";
 import UserTableDisplay from "@/components/organisms/UserTableDisplay";
+import { IoIosPeople } from "react-icons/io";
 
 const Users = () => {
   const { allUsers } = useFetchUsers();
@@ -15,7 +16,10 @@ const Users = () => {
       <SectionContainer className="mt-5">
         <Container>
           <GridContainer>
-            <h2 className="text-xl font-semibold col-span-full">All Users</h2>
+            <h2 className="text-xl font-semibold col-span-full flex items-center gap-4">
+              <IoIosPeople className="text-3xl" />
+              All Users
+            </h2>
             <UserTableDisplay allUsers={allUsers} />
           </GridContainer>
         </Container>

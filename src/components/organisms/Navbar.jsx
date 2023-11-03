@@ -15,7 +15,7 @@ const Navbar = ({ userRole }) => {
     router.replace("/");
   };
   const handleHome = () => {
-    if (userId === undefined) {
+    if (userRole === "admin") {
       router.replace(`/admin`);
     } else router.replace(`/dashboard/${userId}`);
   };
@@ -56,7 +56,7 @@ const Navbar = ({ userRole }) => {
                   className="drawer-overlay"
                 ></label>
                 <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-                  <h3 className="text-2xl font-semibold border-b-4 py-2">
+                  <h3 className="text-2xl font-semibold border-b-4 border-gray-700 py-2">
                     PayNego
                   </h3>
                   {/* Sidebar content here */}
