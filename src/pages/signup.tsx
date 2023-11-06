@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import SectionContainer from "@/components/containers/SectionContainer";
 import Container from "@/components/containers/Container";
@@ -9,26 +8,44 @@ import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
 import Link from "next/link";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+type SignupData = {
+  email: string;
+  password: string;
+  // username: String;
+};
 
 const SignUp = () => {
   const router = useRouter();
+  const auth = getAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      username: "",
+      // username: "",
       password: "",
       email: "",
     },
   });
 
-  const onSubmit = async (data, e) => {
+  const onSubmit = async (data: SignupData, e: any) => {
     e.preventDefault();
     try {
+      const userCredentials = await createUserWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      console.log("user credentials:::", userCredentials);
       const userDocument = doc(collection(dbFireStore, "users"));
-      const userInfo = { ...data, userId: userDocument.id, userRole: "client" };
+      const userInfo = {
+        email: userCredentials?.user?.email,
+        userId: userCredentials?.user?.uid,
+        userRole: "client",
+      };
       await setDoc(userDocument, userInfo);
       toast.success("🦄 Account Created successfully", {
         position: "top-right",
@@ -41,9 +58,19 @@ const SignUp = () => {
         theme: "light",
       });
       router.replace("/");
-    } catch (error) {
-      console.error(error);
-      throw error;
+    } catch (e) {
+      toast.error(`🦄 ${e}`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      console.log("error creating the sign up:::", e);
+      // router.replace("/");
     }
   };
 
@@ -68,7 +95,7 @@ const SignUp = () => {
               className="py-2 px-3 outline-none border border-gray-400"
             />
             <p className="text-red-600">{errors.email?.message}</p>
-            <label>Username</label>
+            {/* <label>Username</label>
             <input
               type="text"
               {...register("username", { required: "Username is required" })}
@@ -76,7 +103,7 @@ const SignUp = () => {
               placeholder="Enter username"
               className="py-2 px-3 outline-none border border-gray-400"
             />
-            <p className="text-red-600">{errors.username?.message}</p>
+            <p className="text-red-600">{errors.username?.message}</p> */}
             <label htmlFor="password">Password</label>
             <input
               type="text"

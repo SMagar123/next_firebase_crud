@@ -17,6 +17,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/dashboard/index.jsx", "src/pages/signup.jsx", "src/pages/login.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/pages/dashboard/index.jsx", "src/pages/signup.tsx", "src/pages/login.tsx", "src/pages/dashboard/[userId]/addrequest.jsx"],
   "exclude": ["node_modules"]
 }

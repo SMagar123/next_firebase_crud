@@ -35,10 +35,10 @@ const UserDashboard = () => {
 
   return (
     <>
-      <Navbar />
+      <Navbar userRole="client" />
       <SectionContainer className="mt-4">
-        <Container>
-          <GridContainer>
+        <Container className="">
+          <GridContainer className="">
             <button
               className="btn col-span-2 col-start-11 bg-gray-700 text-white"
               // onClick={() => document.getElementById("my_modal_3").showModal()}

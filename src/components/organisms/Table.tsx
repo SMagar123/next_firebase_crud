@@ -20,6 +20,7 @@ type UserData = {
   proposedAmount: number;
   actions: any;
 };
+
 const columnHelper = createColumnHelper<UserData>();
 
 const columns = [
