@@ -15,6 +15,7 @@ import {
   where,
 } from "firebase/firestore";
 import Link from "next/link";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 type FormData = {
   email: string;
@@ -22,6 +23,7 @@ type FormData = {
 };
 
 const Login = () => {
+  const auth = getAuth();
   const {
     register,
     handleSubmit,
@@ -35,16 +37,23 @@ const Login = () => {
   const router = useRouter();
   const userRef = collection(dbFireStore, "users");
   const onSubmit = async (data: FormData) => {
-    const userQuery = query(
-      userRef,
-      where("email", "==", data.email),
-      where("password", "==", data.password)
-    );
     try {
+      const userDetail = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      console.log("login :::", userDetail);
+      const userQuery = query(
+        userRef,
+        where("email", "==", userDetail?.user?.email),
+        where("userId", "==", userDetail?.user?.uid)
+      );
       const querySnapshot = await getDocs(userQuery);
       const result = querySnapshot.docs.map((d) => {
         return d.data();
       });
+      console.log("user data from user collection:::", result);
       if (result.length !== 0 && result[0].userRole === "client") {
         toast.success("🦄 Login successfully", {
           position: "top-right",
@@ -69,21 +78,20 @@ const Login = () => {
           theme: "light",
         });
         router.replace(`/admin`);
-      } else {
-        toast.error("🦄 user not found", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-        router.replace("/");
       }
     } catch (e) {
-      console.log(e);
+      console.log("error while login", e);
+      toast.error(`Invalid login credentials`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      router.replace("/");
     }
   };
 
@@ -124,7 +132,7 @@ const Login = () => {
             <p className="text-red-600">{errors.password?.message}</p>
             <input
               type="submit"
-              value="Submit"
+              value="Login"
               className="btn border bg-gray-600 cursor-pointer hover:bg-gray-700 transition duration-300 text-white py-2 px-4"
             />
             <div id="signup" className="flex gap-4">

@@ -2,16 +2,20 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { signOut, getAuth } from "firebase/auth";
 
 const profileImage = {
   src: "/assests/profileimage.jpg",
 };
 
 const Navbar = ({ userRole }) => {
+  const auth = getAuth();
+  console.log("current user:::", auth.currentUser.email);
   const router = useRouter();
   const userId = router.query?.userId;
   const handleLogout = () => {
     console.log("logged out");
+    signOut(auth);
     router.replace("/");
   };
   const handleHome = () => {
