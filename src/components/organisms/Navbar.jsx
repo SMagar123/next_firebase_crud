@@ -2,20 +2,22 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { signOut, getAuth } from "firebase/auth";
+import { signOut } from "firebase/auth";
+import { userAuth } from "@/firebase/config";
+import { destroyCookie } from "nookies";
 
 const profileImage = {
   src: "/assests/profileimage.jpg",
 };
 
 const Navbar = ({ userRole }) => {
-  const auth = getAuth();
-  console.log("current user:::", auth.currentUser.email);
+  // console.log("current user:::", auth.currentUser.email);
   const router = useRouter();
   const userId = router.query?.userId;
   const handleLogout = () => {
     console.log("logged out");
-    signOut(auth);
+    destroyCookie(null, "accessToken");
+    signOut(userAuth);
     router.replace("/");
   };
   const handleHome = () => {

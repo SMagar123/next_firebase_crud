@@ -5,7 +5,7 @@ import Container from "@/components/containers/Container";
 import GridContainer from "@/components/containers/GridContainer";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/router";
-import { dbFireStore } from "@/firebase/config";
+import { dbFireStore, userAuth } from "@/firebase/config";
 import "react-toastify/ReactToastify.min.css";
 import {
   collection,
@@ -15,7 +15,9 @@ import {
   where,
 } from "firebase/firestore";
 import Link from "next/link";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { setCookie, parseCookies } from "nookies";
+// import { authenticate } from "@/utils/Auth";
 
 type FormData = {
   email: string;
@@ -23,7 +25,6 @@ type FormData = {
 };
 
 const Login = () => {
-  const auth = getAuth();
   const {
     register,
     handleSubmit,
@@ -39,11 +40,18 @@ const Login = () => {
   const onSubmit = async (data: FormData) => {
     try {
       const userDetail = await signInWithEmailAndPassword(
-        auth,
+        userAuth,
         data.email,
         data.password
       );
       console.log("login :::", userDetail);
+      if (userDetail.user) {
+        const token = await userDetail.user.getIdToken();
+        setCookie(null, "accessToken", token);
+        // const browserCookie = parseCookies()?.accessToken;
+      }
+      // authenticate(parseCookies()?.acessToken);
+
       const userQuery = query(
         userRef,
         where("email", "==", userDetail?.user?.email),

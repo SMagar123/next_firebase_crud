@@ -7,12 +7,42 @@ import SectionContainer from "@/components/containers/SectionContainer";
 import Container from "@/components/containers/Container";
 import GridContainer from "@/components/containers/GridContainer";
 import CounterDiv from "@/components/molecules/CounterDiv";
+import { NextResponse, NextRequest } from "next/server";
 
 const AdminDashboard = () => {
   const router = useRouter();
   const userRole = "admin";
   const { allData } = useFetchAllFeatures();
   console.log("fetched all records::", allData);
+
+  // const middleware = async (request, response) => {
+  //   const session = request?.cookies?.get("session");
+  //   console.log("session", session);
+
+  //   //Return to /login if don't have a session
+  //   if (!session) {
+  //     // return NextResponse.redirect(new URL("/", request?.url));
+  //     return NextResponse.redirect(new URL("/"));
+  //   }
+
+  //   //Call the authentication endpoint
+  //   const responseAPI = await fetch("/api/login", {
+  //     headers: {
+  //       Cookie: `session=${session?.value}`,
+  //     },
+  //   });
+
+  //   //Return to /login if token is not authorized
+  //   if (responseAPI.status !== 200) {
+  //     return NextResponse.redirect(new URL("/", request.url));
+  //   }
+
+  //   return NextResponse.next();
+  // };
+
+  // useEffect(() => {
+  //   middleware();
+  // }, []);
 
   return (
     <>

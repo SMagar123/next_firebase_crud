@@ -2,13 +2,13 @@ import { useForm } from "react-hook-form";
 import SectionContainer from "@/components/containers/SectionContainer";
 import Container from "@/components/containers/Container";
 import GridContainer from "@/components/containers/GridContainer";
-import { dbFireStore } from "@/firebase/config";
+import { dbFireStore, userAuth } from "@/firebase/config";
 import { collection, doc, onSnapshot, setDoc } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
 import Link from "next/link";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 type SignupData = {
   email: string;
@@ -18,7 +18,7 @@ type SignupData = {
 
 const SignUp = () => {
   const router = useRouter();
-  const auth = getAuth();
+
   const {
     register,
     handleSubmit,
@@ -35,7 +35,7 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const userCredentials = await createUserWithEmailAndPassword(
-        auth,
+        userAuth,
         data.email,
         data.password
       );
