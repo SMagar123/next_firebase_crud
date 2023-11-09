@@ -8,16 +8,26 @@ import {
 // import { useMemo } from "react";
 // import { TimeStamp } from "firebase/firestore";
 import FeatureDetails from "@/components/organisms/FeatureDetails";
+import { AiOutlineEye } from "react-icons/ai";
 
 type UserData = {
   featureName: string;
   description: string;
   status: string;
-  approved: boolean;
+  approved: string;
   approvedAmount: number;
   counterAmount: number;
   proposedAmount: number;
+  actions: any;
+  docId: string;
 };
+
+type UserTableData = {
+  userData: UserData[]; // data is array of the objects of userdata
+  heading: string;
+  userRole: string;
+};
+
 const columnHelper = createColumnHelper<UserData>();
 
 const columns = [
@@ -30,16 +40,30 @@ const columns = [
   }),
   columnHelper.accessor("approved", {
     header: () => "Approved",
-    cell: (info) => (info.getValue() === false ? "No" : "Yes"),
+    cell: (info) => (info.getValue() === "approved" ? "approved" : "pending"),
   }),
   columnHelper.accessor("status", {
     header: () => "Status",
   }),
+  columnHelper.display({
+    header: "Details",
+    id: "actions",
+  }),
 ];
 
-const UserDataTable = ({ userData }: any) => {
+const UserDataTable = ({ userData, heading, userRole }: UserTableData) => {
   const data = useMemo(() => userData, [userData]);
-  const [individualData, setIndividualData] = useState({});
+  const [individualData, setIndividualData] = useState<UserData>({
+    featureName: "",
+    description: "",
+    status: "",
+    approved: "",
+    approvedAmount: 0,
+    counterAmount: 0,
+    proposedAmount: 0,
+    actions: "",
+    docId: "",
+  });
   const [updatedRecord, setUpdatedRecord] = useState(false);
 
   const table = useReactTable({
@@ -47,7 +71,8 @@ const UserDataTable = ({ userData }: any) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-  const handleRowClick = (rowData: any) => {
+
+  const handleRowClick = (rowData: UserData) => {
     console.log("i am clicked", rowData);
     setIndividualData(rowData);
     const element = document.getElementById(
@@ -59,18 +84,30 @@ const UserDataTable = ({ userData }: any) => {
   };
   console.log("individual data::", individualData);
   console.log("daata::", data);
+
   const clearModal = () => {
     document.getElementById("close")?.click();
   };
+
   useEffect(() => {
     clearModal();
   }, [updatedRecord]);
 
+  if (data?.length === 0) {
+    return (
+      <div className="col-span-12 border p-4 shadow-md">
+        <h1 className="text-2xl font-semibold mb-4 text-center">
+          <span className="loading loading-bars loading-lg"></span>
+        </h1>
+      </div>
+    );
+  }
+
   return (
     <div className="col-span-12">
-      <h1>Your Request Data</h1>
+      <h1 className="text-2xl font-semibold mb-4">{heading}</h1>
       <table className="border border-black w-full">
-        <thead className="bg-blue-700 text-white">
+        <thead className="bg-gray-700 text-white">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
@@ -90,17 +127,24 @@ const UserDataTable = ({ userData }: any) => {
           {table.getRowModel().rows.map((row) => (
             <tr
               key={row.id}
-              className="hover:bg-slate-300"
-              onClick={() => {
-                handleRowClick(row?.original);
-              }}
+              className="hover:bg-slate-200 transition ease-in-out"
+              // onClick={() => {
+              //   handleRowClick(row?.original);
+              // }}
             >
               {row.getVisibleCells().map((cell) => (
                 <td
                   key={cell.id}
-                  className="border border-black p-2 text-center cursor-pointer"
+                  className="border border-black py-4 text-center cursor-pointer font-medium"
                 >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  {cell.column.id === "actions" ? (
+                    <AiOutlineEye
+                      className="text-2xl text-gray-800 text-center w-full"
+                      onClick={() => handleRowClick(row?.original)}
+                    />
+                  ) : (
+                    flexRender(cell.column.columnDef.cell, cell.getContext())
+                  )}
                 </td>
               ))}
             </tr>
@@ -109,11 +153,12 @@ const UserDataTable = ({ userData }: any) => {
       </table>
 
       <dialog id="feature_request_update" className="modal">
-        <div className="modal-box w-11/12 max-w-5xl scroll-m-5">
+        <div className="modal-box  scroll-m-5">
           <FeatureDetails
             feature={individualData}
             updatedRecord={setUpdatedRecord}
             update={updatedRecord}
+            userRole={userRole}
           />
           <div className="modal-action">
             <form method="dialog">

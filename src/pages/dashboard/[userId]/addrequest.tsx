@@ -17,6 +17,16 @@ import GridContainer from "@/components/containers/GridContainer";
 import Navbar from "@/components/organisms/Navbar";
 import { useRouter } from "next/router";
 
+type UserRequest = {
+  featureName: string;
+  description: string;
+  status: string;
+  approved: string;
+  approvedAmount: number;
+  counterAmount: number;
+  proposedAmount: number;
+};
+
 const AddRequest = () => {
   const router = useRouter();
   const userId = router.query?.userId;
@@ -33,11 +43,10 @@ const AddRequest = () => {
       proposedAmount: 0,
       counterAmount: 0,
       approvedAmount: 0,
-      approved: false,
+      approved: "pending",
     },
   });
-  const addRecord = async (data, e) => {
-    e.preventDefault();
+  const addRecord = async (data: UserRequest) => {
     try {
       const docRef = doc(collection(dbFireStore, "features"));
       const newFeatureRequest = { ...data, userId: userId };
@@ -71,11 +80,11 @@ const AddRequest = () => {
   return (
     <>
       <Navbar />
-      <SectionContainer>
+      <SectionContainer className="mt-4">
         <Container>
           <GridContainer>
             <div className="col-span-4 lg:col-span-6 lg:col-start-4">
-              <h3 className="font-bold mb-3 text-center">
+              <h3 className="font-bold mb-3 text-center text-2xl">
                 Add Required Feature
               </h3>
               <form
@@ -85,7 +94,7 @@ const AddRequest = () => {
                 <label htmlFor="Feature">Feature</label>
                 <input
                   type="text"
-                  name="featureName"
+                  // name="featureName"
                   {...register("featureName", {
                     required: "Feature name is required",
                   })}
@@ -95,7 +104,7 @@ const AddRequest = () => {
                 <p className="text-red-600">{errors.featureName?.message}</p>
                 <label htmlFor="Description">Description</label>
                 <textarea
-                  name="description"
+                  // name="description"
                   {...register("description", {
                     required: "Description is required",
                   })}
@@ -106,7 +115,7 @@ const AddRequest = () => {
                 <input
                   type="submit"
                   value="Submit"
-                  className="border bg-blue-700 cursor-pointer hover:bg-blue-800 transition duration-300 text-white py-2 px-4"
+                  className="btn border bg-gray-700 cursor-pointer hover:bg-gray-800 transition duration-300 text-white py-2 px-4"
                 />
               </form>
             </div>

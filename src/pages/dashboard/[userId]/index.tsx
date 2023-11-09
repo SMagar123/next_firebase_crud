@@ -25,29 +25,33 @@ import useUserDetails from "@/hooks/useUserDetails";
 const UserDashboard = () => {
   const router = useRouter();
   const userId = router.query?.userId;
+  const userRole = "client";
   const { userData } = useUserDetails();
   const addRecord = () => {
     router.push(`/dashboard/${userId}/addrequest`);
   };
   console.log("user id:::", userId);
   console.log("user details:::", userData);
- 
 
   return (
     <>
-      <Navbar />
-      <SectionContainer className="mt-3">
-        <Container>
-          <GridContainer>
+      <Navbar userRole="client" />
+      <SectionContainer className="mt-4">
+        <Container className="">
+          <GridContainer className="">
             <button
-              className="btn col-span-2 col-start-11 btn-primary"
+              className="btn col-span-2 col-start-11 bg-gray-700 text-white"
               // onClick={() => document.getElementById("my_modal_3").showModal()}
               onClick={addRecord}
             >
               Add Request
-              <IoMdAddCircle fontSize="large" />
+              <IoMdAddCircle className="text-xl" />
             </button>
-            <UserDataTable userData={userData} />
+            <UserDataTable
+              userData={userData}
+              heading={"Your Records"}
+              userRole={userRole}
+            />
             {/* <UserDataTable /> */}
             <ToastContainer />
           </GridContainer>
