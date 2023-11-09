@@ -2,7 +2,7 @@ const SectionContainer = ({
   className = "",
   children,
 }: {
-  className: string;
+  className?: string;
   children: any;
 }) => {
   return <section className={className}>{children}</section>;

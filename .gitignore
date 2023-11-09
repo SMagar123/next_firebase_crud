@@ -33,3 +33,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.paymentnegotiation-firebase-adminsdk-nekgh-cef80c7322.json

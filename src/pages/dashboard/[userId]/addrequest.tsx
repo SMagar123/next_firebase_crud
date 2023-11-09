@@ -17,6 +17,16 @@ import GridContainer from "@/components/containers/GridContainer";
 import Navbar from "@/components/organisms/Navbar";
 import { useRouter } from "next/router";
 
+type UserRequest = {
+  featureName: string;
+  description: string;
+  status: string;
+  approved: string;
+  approvedAmount: number;
+  counterAmount: number;
+  proposedAmount: number;
+};
+
 const AddRequest = () => {
   const router = useRouter();
   const userId = router.query?.userId;
@@ -36,8 +46,7 @@ const AddRequest = () => {
       approved: "pending",
     },
   });
-  const addRecord = async (data, e) => {
-    e.preventDefault();
+  const addRecord = async (data: UserRequest) => {
     try {
       const docRef = doc(collection(dbFireStore, "features"));
       const newFeatureRequest = { ...data, userId: userId };
@@ -85,7 +94,7 @@ const AddRequest = () => {
                 <label htmlFor="Feature">Feature</label>
                 <input
                   type="text"
-                  name="featureName"
+                  // name="featureName"
                   {...register("featureName", {
                     required: "Feature name is required",
                   })}
@@ -95,7 +104,7 @@ const AddRequest = () => {
                 <p className="text-red-600">{errors.featureName?.message}</p>
                 <label htmlFor="Description">Description</label>
                 <textarea
-                  name="description"
+                  // name="description"
                   {...register("description", {
                     required: "Description is required",
                   })}

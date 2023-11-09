@@ -19,6 +19,13 @@ type UserData = {
   counterAmount: number;
   proposedAmount: number;
   actions: any;
+  docId: string;
+};
+
+type UserTableData = {
+  userData: UserData[]; // data is array of the objects of userdata
+  heading: string;
+  userRole: string;
 };
 
 const columnHelper = createColumnHelper<UserData>();
@@ -44,9 +51,19 @@ const columns = [
   }),
 ];
 
-const UserDataTable = ({ userData, heading, userRole }: any) => {
+const UserDataTable = ({ userData, heading, userRole }: UserTableData) => {
   const data = useMemo(() => userData, [userData]);
-  const [individualData, setIndividualData] = useState({});
+  const [individualData, setIndividualData] = useState<UserData>({
+    featureName: "",
+    description: "",
+    status: "",
+    approved: "",
+    approvedAmount: 0,
+    counterAmount: 0,
+    proposedAmount: 0,
+    actions: "",
+    docId: "",
+  });
   const [updatedRecord, setUpdatedRecord] = useState(false);
 
   const table = useReactTable({
@@ -54,6 +71,7 @@ const UserDataTable = ({ userData, heading, userRole }: any) => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
   const handleRowClick = (rowData: UserData) => {
     console.log("i am clicked", rowData);
     setIndividualData(rowData);
@@ -66,9 +84,11 @@ const UserDataTable = ({ userData, heading, userRole }: any) => {
   };
   console.log("individual data::", individualData);
   console.log("daata::", data);
+
   const clearModal = () => {
     document.getElementById("close")?.click();
   };
+
   useEffect(() => {
     clearModal();
   }, [updatedRecord]);
@@ -82,6 +102,7 @@ const UserDataTable = ({ userData, heading, userRole }: any) => {
       </div>
     );
   }
+
   return (
     <div className="col-span-12">
       <h1 className="text-2xl font-semibold mb-4">{heading}</h1>

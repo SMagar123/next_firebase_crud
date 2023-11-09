@@ -1,5 +1,5 @@
 type Container = {
-  className: string;
+  className?: string;
   children: any;
 };
 const Container = ({ className = "", children }: Container) => {

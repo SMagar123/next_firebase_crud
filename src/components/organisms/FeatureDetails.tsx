@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { Dispatch, SetStateAction, useMemo, useState } from "react";
 import SectionContainer from "@/components/containers/SectionContainer";
 import Container from "@/components/containers/Container";
 import GridContainer from "@/components/containers/GridContainer";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import {
   collection,
   doc,
@@ -17,7 +17,30 @@ import { dbFireStore } from "@/firebase/config";
 import "react-toastify/ReactToastify.min.css";
 import { ToastContainer, toast } from "react-toastify";
 
-const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
+type UserData = {
+  featureName: string;
+  description: string;
+  status: string;
+  approved: string;
+  approvedAmount: number;
+  counterAmount: number;
+  proposedAmount: number;
+  docId: string;
+};
+
+type FeatureDetails = {
+  feature: UserData;
+  updatedRecord: Dispatch<SetStateAction<boolean>>;
+  update: boolean;
+  userRole: string;
+};
+
+const FeatureDetails = ({
+  feature,
+  updatedRecord,
+  update,
+  userRole,
+}: FeatureDetails) => {
   const featureDetail = useMemo(() => feature, [feature]);
   const details = Object.entries(featureDetail).map(([key, value]) => ({
     key,
@@ -31,7 +54,7 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
     formState: { errors },
   } = useForm();
 
-  const validateNonNegative = (value) => {
+  const validateNonNegative = (value: number) => {
     if (value < 0) {
       return "Value must be a non-negative number";
     }
@@ -129,8 +152,7 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
     }
   };
   //update the request
-  const updateRecord = async (data, e) => {
-    e.preventDefault();
+  const updateRecord = async (data: object) => {
     try {
       const docId = featureDetail?.docId; // Assuming featureDetail contains the valid docId
       if (docId) {
@@ -156,6 +178,12 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
     }
   };
 
+  const handleModal = () => {
+    const element = document.getElementById("my_modal_3") as HTMLDialogElement;
+    if (element) {
+      element.showModal();
+    }
+  };
   return (
     <SectionContainer>
       <Container>
@@ -196,7 +224,7 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
                 <>
                   <input
                     type="number"
-                    name="proposedAmount"
+                    // name="proposedAmount"
                     {...register(
                       "proposedAmount",
 
@@ -220,7 +248,7 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
                 <>
                   <input
                     type="number"
-                    name="counterAmount"
+                    // name="counterAmount"
                     {...register("counterAmount", {
                       required: "Counter Amount is required",
                       validate: validateNonNegative,
@@ -265,9 +293,7 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
             {userRole === "client" ? (
               <button
                 className="btn w-full mt-4 border bg-red-700 cursor-pointer hover:bg-red-800 transition duration-300 text-white py-2 px-4"
-                onClick={() =>
-                  document.getElementById("my_modal_3").showModal()
-                }
+                onClick={handleModal}
                 disabled={featureDetail?.approved === "approved" ? true : false}
               >
                 Cancel Request
@@ -275,9 +301,7 @@ const FeatureDetails = ({ feature, updatedRecord, update, userRole }) => {
             ) : (
               <button
                 className="btn w-full mt-4 border bg-red-700 cursor-pointer hover:bg-red-800 transition duration-300 text-white py-2 px-4"
-                onClick={() =>
-                  document.getElementById("my_modal_3").showModal()
-                }
+                onClick={handleModal}
                 disabled={
                   featureDetail?.proposedAmount === 0 ||
                   featureDetail?.status === "solved"

@@ -2,7 +2,7 @@ const GridContainer = ({
   className = "",
   children,
 }: {
-  className: string;
+  className?: string;
   children: any;
 }) => {
   return (

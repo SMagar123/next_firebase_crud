@@ -5,6 +5,7 @@ import type { NextRequest } from "next/server";
 const protectedRoutes = ["/admin", "/admin/featuresRequested", "/dashboard"];
 export default function middleware(req: NextRequest) {
   let cookie = req.cookies.get("accessToken");
+  // console.log("session:::", req);
 
   if (
     !authenticate(cookie?.value) &&

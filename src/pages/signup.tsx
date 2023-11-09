@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { FormEvent } from "react";
 import SectionContainer from "@/components/containers/SectionContainer";
 import Container from "@/components/containers/Container";
 import GridContainer from "@/components/containers/GridContainer";
@@ -31,8 +32,7 @@ const SignUp = () => {
     },
   });
 
-  const onSubmit = async (data: SignupData, e: any) => {
-    e.preventDefault();
+  const formSubmit = async (data: SignupData) => {
     try {
       const userCredentials = await createUserWithEmailAndPassword(
         userAuth,
@@ -79,7 +79,7 @@ const SignUp = () => {
       <Container className="">
         <GridContainer className="">
           <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(formSubmit)}
             className="col-span-full shadow-lg rounded-md flex flex-col gap-2 lg:col-span-6 lg:col-start-4 py-4 px-5"
           >
             <h1 className="text-3xl font-semibold text-center border-b-4">

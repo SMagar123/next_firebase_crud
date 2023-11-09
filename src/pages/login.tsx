@@ -19,7 +19,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { setCookie, parseCookies } from "nookies";
 // import { authenticate } from "@/utils/Auth";
 
-type FormData = {
+type LoginData = {
   email: string;
   password: string;
 };
@@ -37,7 +37,7 @@ const Login = () => {
   });
   const router = useRouter();
   const userRef = collection(dbFireStore, "users");
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: LoginData) => {
     try {
       const userDetail = await signInWithEmailAndPassword(
         userAuth,

@@ -6,11 +6,13 @@ import { signOut } from "firebase/auth";
 import { userAuth } from "@/firebase/config";
 import { destroyCookie } from "nookies";
 
+type UserRole = { userRole?: string };
+
 const profileImage = {
   src: "/assests/profileimage.jpg",
 };
 
-const Navbar = ({ userRole }) => {
+const Navbar = ({ userRole }: UserRole) => {
   // console.log("current user:::", auth.currentUser.email);
   const router = useRouter();
   const userId = router.query?.userId;

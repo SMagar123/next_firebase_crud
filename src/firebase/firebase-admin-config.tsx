@@ -1,4 +1,5 @@
 import { initializeApp, getApps, cert } from "firebase-admin/app";
+import secretKey from "../../paymentnegotiation-firebase-adminsdk-nekgh-cef80c7322.json";
 
 const firebaseAdminConfig = {
   credential: cert({
