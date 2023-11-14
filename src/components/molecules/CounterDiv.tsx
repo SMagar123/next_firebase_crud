@@ -1,6 +1,11 @@
 import React from "react";
+type Counter = {
+  title: string;
+  count: number;
+  titleColor?: string;
+};
 
-const CounterDiv = ({ title, count, titleColor }) => {
+const CounterDiv = ({ title, count, titleColor }: Counter) => {
   return (
     <div
       className={`border border-${titleColor} ease-in-out col-span-4 lg:col-span-3 p-4 shadow-sm flex flex-col gap-5 rounded-md cursor-pointer hover:shadow-lg hover:shadow-${titleColor} hover:translate-y-2 transition`}
