@@ -139,8 +139,8 @@ const Navbar = ({ userRole }: UserRole) => {
                 <li>
                   <a onClick={handleHome}>Homepage</a>
                 </li>
-                <li>
-                  <a>Portfolio</a>
+                <li className="hover:bg-gray-400 rounded-md">
+                  <Link href="/charts/charts ">Charts</Link>
                 </li>
                 <li>
                   <a>About</a>
