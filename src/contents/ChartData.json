@@ -1,0 +1,24 @@
+{
+  "chartData": [
+    {
+      "name": "Rowan",
+      "salary": 1400,
+      "projects": 2500
+    },
+    {
+      "name": "Nischal",
+      "projects": 1500,
+      "salary": 2210
+    },
+    {
+      "name": "Sunil",
+      "projects": 2000,
+      "salary": 2290
+    },
+    {
+      "name": "Suraj",
+      "projects": 1100,
+      "salary": 1000
+    }
+  ]
+}
